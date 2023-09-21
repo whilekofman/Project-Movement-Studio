@@ -11,7 +11,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     // const onSubmit = (e) => {
     //     e.preventDefault();
@@ -47,10 +47,10 @@ const Login = () => {
                             </div>
                         </IconContext.Provider>
                     </div>
-                    <button onClick={onSubmit}>Login</button>
+                    <button>Login</button>
                 </form>
                 <div className="signup-text">
-                    <span>Don't Have An Account? </span>
+                    <span>Don&apos;t Have An Account?</span>
                     <span className="signup-link" onClick={() => navigate('/signup')}>Sign Up</span>
                 </div>
             </div>
