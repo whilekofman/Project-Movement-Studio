@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import csrfFetch, { restoreCSRF } from "../csrf";
+import sessionReducer from "./sessionReducer";
 
 const initialSession = {
     user: JSON.parse(sessionStorage.getItem("currentUser")) || null,
@@ -8,20 +9,6 @@ const initialSession = {
 
 const SessionContext = createContext();
 
-const sessionReducer = (state, action) => {
-
-    switch (action.type) {
-        case 'LOGIN':
-            sessionStorage.setItem("currentUser"), JSON.stringify(action.user);
-            return {...state, user: action.user, isLoggedIn: true};
-        case 'LOGOUT':
-            sessionStorage.removeItem("currentUser");
-            return {...state, user: null, isLoggedIn: false};
-        default:
-            return state;
-    }
-};
-
 export const SessionProvider = ({ children }) => {
     const [session, dispatch ] = useReducer(sessionReducer, initialSession);
 
@@ -29,13 +16,15 @@ export const SessionProvider = ({ children }) => {
         const restoreSession = async () => {
             try {
                 const response = await restoreCSRF();
-                const data = response.json();
+                const data = await response.json();
                 dispatch({type: "LOGIN", user: data.user});
             } catch (error) {
                 console.error(error);
                 throw error;
             }
         }
+
+        restoreSession();
     }, []);
 
     const login = async ({ credential, password}) => {
@@ -65,7 +54,13 @@ export const SessionProvider = ({ children }) => {
             throw error;
         }
     }
-}
+    
+    return (
+        <SessionContext.Provider value={{ session, login, logout }}>
+            {children}
+        </SessionContext.Provider>
+    );
+};
 
 export const useSession = () => {
     const context = useContext(SessionContext);

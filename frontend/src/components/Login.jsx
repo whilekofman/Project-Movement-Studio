@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { IconContext } from 'react-icons';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSession } from "../features/session/sessionContext";
+import { useSession } from "../features/session/SessionContext";
 
 const Login = () => {
     const navigate = useNavigate();

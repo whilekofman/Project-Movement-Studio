@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import { SessionProvider } from './features/session/sessionContext.js'
+import { SessionProvider } from './features/session/SessionContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <SessionProvider> */}
+    <SessionProvider>
       <App />
-    {/* </SessionProvider> */}
+    </SessionProvider>
   </React.StrictMode>,
 )
