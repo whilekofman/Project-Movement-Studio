@@ -12,20 +12,29 @@ const SessionContext = createContext();
 export const SessionProvider = ({ children }) => {
     const [session, dispatch ] = useReducer(sessionReducer, initialSession);
 
-    useEffect(() => {
-        const restoreSession = async () => {
-            try {
-                const response = await restoreCSRF();
-                const data = await response.json();
-                dispatch({type: "LOGIN", user: data.user});
-            } catch (error) {
-                console.error("Problem restoring session: ", error);
-                throw error;
-            }
+    const storeCurrentUser = (user) => {
+        if (user) {
+            sessionStorage.setItem("currentUser", JSON.stringify(user))
+        } else {
+            sessionStorage.removeItem("currentUser")
         }
+    }
 
-        restoreSession();
-    }, []);
+    const storeCSRFToken = (res) => {
+        const csrfToken = res.headers.get("X-CSRF-Token");
+        if (csrfToken) {
+            sessionStorage.setItem("X-CSRF-Token", csrfToken);
+        }
+    }
+
+    const restoreSession = () => async dispatch => {
+        const res = await csrfFetch("/api/v1/session");
+        storeCSRFToken(res);
+        const data = await res.json();
+        storeCurrentUser(data.user);
+        dispatch({type: 'LOGIN', user: data.user});
+        return res;
+    }
 
     const login = async ({ credential, password}) => {
         try {
@@ -40,7 +49,7 @@ export const SessionProvider = ({ children }) => {
             console.error("Problem with login: ", error);
             throw error;
         }
-    };
+    }
 
     const logout = async () => {
         try {
