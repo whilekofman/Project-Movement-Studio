@@ -3,26 +3,32 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { IconContext } from 'react-icons';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import { login } from "../store/reducers/session";
+import { useSession } from "../features/session/sessionContext";
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login } = useSession;
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const dispatch = useDispatch()
 
-    // const onSubmit = (e) => {
-    //     e.preventDefault();
-    //     dispatch(login({ email, password }))
-    // }
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await login({credential: email, password});
+            navigate("/");
+        } catch (error) {
+            console.error("Login failed:", error);
+            throw error;
+        }
+    };
 
     return (
         <div className='login-container'>
             <div className="login-form">
                 <span>Login</span>
-                <form action="#">
+                <form onSubmit={onSubmit}>
                     <input 
                     type="text" 
                     name="email" 
@@ -47,7 +53,7 @@ const Login = () => {
                             </div>
                         </IconContext.Provider>
                     </div>
-                    <button>Login</button>
+                    <button type="submit">Login</button>
                 </form>
                 <div className="signup-text">
                     <span>Don&apos;t Have An Account?</span>
