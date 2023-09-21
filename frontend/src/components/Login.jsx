@@ -7,17 +7,16 @@ import { useSession } from "../features/session/SessionContext";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login } = useSession;
+    const { login } = useSession();
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const onSubmit = async (e) => {
         e.preventDefault();
-
         try {
             await login({credential: email, password});
-            navigate("/");
+            navigate("dashboard");
         } catch (error) {
             console.error("Login failed:", error);
             throw error;

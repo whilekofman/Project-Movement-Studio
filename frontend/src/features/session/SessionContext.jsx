@@ -19,7 +19,7 @@ export const SessionProvider = ({ children }) => {
                 const data = await response.json();
                 dispatch({type: "LOGIN", user: data.user});
             } catch (error) {
-                console.error(error);
+                console.error("Problem restoring session: ", error);
                 throw error;
             }
         }
@@ -37,7 +37,7 @@ export const SessionProvider = ({ children }) => {
             dispatch({type: 'LOGIN', user: data.user});
             return res;
         } catch (error) {
-            console.error(error);
+            console.error("Problem with login: ", error);
             throw error;
         }
     };
@@ -50,7 +50,7 @@ export const SessionProvider = ({ children }) => {
             dispatch({type: 'LOGOUT'});
             return res;
         } catch (error) {
-            console.error(error);
+            console.error("Problem with logout: ", error);
             throw error;
         }
     }
