@@ -569,7 +569,7 @@ $component_padding: 2rem 8rem 2rem 8rem;
         .contact-container {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 15rem;
             margin-bottom: 5rem;
             .contact {
                 display: flex;
@@ -663,7 +663,7 @@ $component_padding: 2rem 8rem 2rem 8rem;
             }
 
             img {
-                height: 35rem;
+                width: 50rem;
                 filter: grayscale(40%);
                 border-radius: .5rem;
             }
