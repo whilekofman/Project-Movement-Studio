@@ -14,6 +14,7 @@ import { IconContext } from 'react-icons';
 const Home = () => {
   const bannerRef = useRef(null);
   const [showBanner, setShowBanner] = useState(false);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -37,8 +38,21 @@ const Home = () => {
     setShowBanner(!showBanner); 
   };
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycby8i7q_MgHBxcxHhSYVk5EzOZ4hLaYa7L6of_7dkyTDEpyxorhVjbi0UPz3IZWcPpkJ/exec', {
+        method: 'POST',
+        headers: {
+         'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({action: 'add', Email: email})
+      });
+
+
+    } catch(error) {
+      console.error(error);
+    };
     setShowBanner(false);
   };
 
@@ -65,11 +79,24 @@ const Home = () => {
 
             <div className="banner-text">
               <span>SUBSCRIBE FOR WEEKLY NEWSLETTERS</span>
-              <span>COMING SOON</span>
             </div>
-            <div className="banner-form">
-              <input type="text" placeholder="Email Address" />
-              <div className="banner-button" onClick={handleSubmit}>Submit</div>
+            <div className="banner-right">
+              <div className="banner-form">
+                <input type="text" 
+                placeholder="Email Address" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                />
+                <div className="banner-button" onClick={handleSubscribe}>Submit</div>
+              </div>
+
+              <div className="banner-ubsub">
+                <p>
+                  Click 
+                  <span> Here </span>
+                  to Unsubscribe
+                </p>
+              </div>
             </div>
           </div>
           </div>

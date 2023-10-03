@@ -745,7 +745,7 @@ $component_padding: 2rem 8rem 2rem 8rem;
             justify-content: space-around;
             align-items: center;
             width: 50rem;
-            height: 5rem;
+            height: 7rem;
             padding: 1rem;
             border-radius: .5rem;
             transition: right 0.3s ease-in-out;
@@ -784,45 +784,76 @@ $component_padding: 2rem 8rem 2rem 8rem;
                         flex-direction: column;
                         width: 100%;
                         background-color: white;
-        
+                        
                         span {
                             background-color: white;
                             font-family: $font_bebas;
                             color: black;
+                            font-size: 1.5rem;
+                            font-weight: 700;
                         }
                     }
-                        
-                    .banner-form {
+                    .banner-right {
+                        display: flex;
+                        flex-direction: column;
                         background-color: white;
                         color: black;
-                        display: flex;
-                        align-items: center;
                         gap: .5rem;
-                        width: fit-content;
-
-                        input {
-                            border: 1px solid rgba(0, 0, 0, 0.5);
-                            height: 2rem;
-                            border-radius: .5rem;
-                            width: 15rem;
-                            
-                            &::placeholder {
+                        
+                        .banner-form {
+                            background-color: white;
+                            color: black;
+                            display: flex;
+                            align-items: center;
+                            gap: .5rem;
+                            width: fit-content;
+    
+                            input {
+                                border: 1px solid rgba(0, 0, 0, 0.5);
+                                height: 2rem;
+                                border-radius: .5rem;
+                                width: 15rem;
+                                
+                                &::placeholder {
+                                    padding: .5rem;
+                                    font-family: $font_dm_sans;
+                                    font-weight: 500;
+                                }
+                            }
+            
+                            .banner-button {
+                                background-color: $gold;
                                 padding: .5rem;
+                                border-radius: .5rem;
                                 font-family: $font_dm_sans;
-                                font-weight: 500;
+                                font-weight: 600;
+                                color: black;
+                                cursor: pointer;
                             }
                         }
-        
-                        .banner-button {
-                            background-color: $gold;
-                            padding: .5rem;
-                            border-radius: .5rem;
-                            font-family: $font_dm_sans;
-                            font-weight: 600;
+
+                        .banner-ubsub {
+                            background-color: white;
                             color: black;
-                            cursor: pointer;
+                            width: fit-content;
+                            height: fit-content;
+                            font-size: .75rem;
+                            align-self: flex-end;
+                            margin-right: 5rem;
+
+                            p {
+                                background-color: white;
+                                color: black;
+
+                                span {
+                                 background-color: white;   
+                                 color: blue;
+                                 cursor: pointer;
+                                }
+                            }
                         }
                     }
+
 
                 }
             }
