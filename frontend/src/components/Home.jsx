@@ -14,7 +14,9 @@ import { IconContext } from 'react-icons';
 const Home = () => {
   const bannerRef = useRef(null);
   const [showBanner, setShowBanner] = useState(false);
+  const [showUnsub, setShowUnsub] = useState(false);
   const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('SUBSCRIBE FOR WEEKLY NEWSLETTERS');
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -38,21 +40,58 @@ const Home = () => {
     setShowBanner(!showBanner); 
   };
 
+  const handleToggle = () => {
+    setShowUnsub(!showUnsub);
+    if (showUnsub === false) {
+      setMessage('SUBSCRIBE FOR WEEKLY NEWSLETTERS');
+    } else {
+      setMessage(`We're sorry to see you go.`);
+    };
+  };
+
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycby8i7q_MgHBxcxHhSYVk5EzOZ4hLaYa7L6of_7dkyTDEpyxorhVjbi0UPz3IZWcPpkJ/exec', {
+    if (showUnsub === false) {
+      try {
+        console.log("sub")
+        const response = await fetch('https://sheetdb.io/api/v1/df7y3heuarkyp', {
         method: 'POST',
         headers: {
-         'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({action: 'add', Email: email})
-      });
+        });
 
+        if (response.ok) {
+          setMessage('Subscribed to Newsletter!');
+        } else {
+          setMessage('Error subscribing to Newsletter, please let us know!')
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.log("remove");
+      try {
+        const response = await fetch('https://sheetdb.io/api/v1/df7y3heuarkyp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({action:'remove', Email: email})
+        });
+        if (response.ok) {
+          setMessage('Unsubscribed from Newsletter!');
+        } else {
+          setMessage('Error subscribing to Newsletter, please let us know!');
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-    } catch(error) {
-      console.error(error);
-    };
+    setEmail("");
+    setMessage("SUBSCRIBE FOR WEEKLY NEWSLETTERS")
     setShowBanner(false);
   };
 
@@ -78,7 +117,7 @@ const Home = () => {
           <div className="banner-main">
 
             <div className="banner-text">
-              <span>SUBSCRIBE FOR WEEKLY NEWSLETTERS</span>
+              <span>{message}</span>
             </div>
             <div className="banner-right">
               <div className="banner-form">
@@ -87,14 +126,20 @@ const Home = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 />
-                <div className="banner-button" onClick={handleSubscribe}>Submit</div>
+                <div className="banner-button" onClick={handleSubscribe}>
+                  SUBMIT
+                </div>
               </div>
 
-              <div className="banner-ubsub">
+              <div className="banner-unsub">
                 <p>
                   Click 
-                  <span> Here </span>
-                  to Unsubscribe
+                  <span className="banner-toggle" onClick={handleToggle}> Here </span>
+                  to 
+                  {!showUnsub ? 
+                    <span> Unsubscribe</span> :
+                    <span> Subscribe</span>
+                  }
                 </p>
               </div>
             </div>
