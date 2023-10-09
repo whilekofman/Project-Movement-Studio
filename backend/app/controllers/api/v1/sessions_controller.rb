@@ -18,8 +18,9 @@ class Api::V1::SessionsController < ApplicationController
     end
 
     def create
-        @user = User.find_by_credentials(params[:user][:email], params[:user][:password])
-        if !@user
+        @user = User.find_by_credentials(params[:email], params[:password])
+        byebug
+        if @user
             login!(@user)
             render '/api/v1/users/show'
         else 
@@ -28,6 +29,7 @@ class Api::V1::SessionsController < ApplicationController
     end
 
     def destroy
+        byebug
         if current_user
             logout!
             render json: {}
