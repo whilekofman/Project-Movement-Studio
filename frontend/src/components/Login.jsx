@@ -15,8 +15,8 @@ const Login = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login({credential: email, password});
-            navigate("dashboard");
+            await login({ email, password});
+            navigate("/dashboard");
         } catch (error) {
             console.error("Login failed:", error);
             throw error;

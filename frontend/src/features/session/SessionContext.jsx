@@ -28,7 +28,7 @@ export const SessionProvider = ({ children }) => {
     }
 
     const restoreSession = () => async dispatch => {
-        const res = await csrfFetch("/api/v1/session");
+        const res = await csrfFetch("http://localhost:5000/api/v1/session");
         storeCSRFToken(res);
         const data = await res.json();
         storeCurrentUser(data.user);
@@ -36,11 +36,11 @@ export const SessionProvider = ({ children }) => {
         return res;
     }
 
-    const login = async ({ credential, password}) => {
+    const login = async ({ email, password}) => {
         try {
-            const res = await csrfFetch("/api/v1/session", {
+            const res = await csrfFetch("http://localhost:5000/api/v1/session", {
                 method: 'POST',
-                body: JSON.stringify({ credential, password }),
+                body: JSON.stringify({ email, password }),
             });
             const data = await res.json();
             dispatch({type: 'LOGIN', user: data.user});
@@ -53,7 +53,7 @@ export const SessionProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            const res =  await csrfFetch("/api/v1/session", {
+            const res =  await csrfFetch("http://localhost:5000/api/v1/session", {
                 method: "DELETE",
             });
             dispatch({type: 'LOGOUT'});
@@ -65,7 +65,7 @@ export const SessionProvider = ({ children }) => {
     }
     
     return (
-        <SessionContext.Provider value={{ session, login, logout }}>
+        <SessionContext.Provider value={{ session, login, logout, restoreSession }}>
             {children}
         </SessionContext.Provider>
     );
